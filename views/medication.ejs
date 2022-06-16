@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Circle</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-preload">
+	<!-- Wrapper -->
+
+
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+
+				<!-- Logo -->
+				<a href="/home" class="logo">
+					<span class="symbol"><img src="img/logo.svg" alt="" /></span><span class="title">Circle</span>
+				</a>
+
+				<!-- Nav -->
+				<nav>
+					<ul>
+						<li><a href="#menu">Menu</a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</header>
+
+		<!-- Menu -->
+		<nav id="menu">
+			<h2>Menu</h2>
+			<ul>
+				<li><a href="/home">Home</a></li>
+							<li><a href="/medication">Medication</a></li>
+							<li><a href="/moodLog">Mood Log</a></li>
+							<li><a href="/profile">Profile</a></li>
+							<li><a href="/appointments">Appointments</a></li>
+							<li><a href="/insights">Insights</a></li>
+							<li><a href="/logout">Logout</a></li>
+				<!-- <li><a href="generic.html">Appointments</a></li> -->
+				<!-- <li><a href="generic.html">Consequat dolor</a></li>
+							<li><a href="elements.html">Elements</a></li> -->
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<h1>Medications</h1>
+				<section class="image main">
+					<h2>Todays Meds: </h2>
+							<% for(let i=0; i<medications.length; i++) {%>
+								<span>
+									<%= todaysDate == medications[i].nextDose ? medications[i].medicine : '' %>
+								</span>
+								<% } %>
+							
+				</section>
+				<hr>
+				<div class="box alt">
+					<div class="row gtr-uniform">
+						<div class="col-12">
+							
+							<h2 class="pgHead">Add Medication</h2>
+							<form action="/addMedication" method="POST">
+								<input hidden value="<%= user.local.email %>" name="name">
+								<input hidden value="true" name="tookMed">
+								<input type="text" name="medicine" placeholder="Name of Medicine">
+								<input type="text" name="purpose" placeholder="What's the purpose?">
+	
+								<label>
+									Start Date:
+									<input type="date" name="startDate">
+								</label>
+	
+								<label>How often:<label>
+										<input type="radio" id="daily" value="daily" name="recurrence" checked>
+										
+										<label for="daily">Daily</label>
+	
+										<input type="radio" id="weekly" value="weekly" name="recurrence">
+										<label for="weekly">Weekly</label>
+	
+										<input type="radio" id="monthly" value="monthly" name="recurrence">
+										<label for="monthly">Monthly</label>
+	
+										<label>Time of Dose:<label>
+												<input type="radio" id="morning" value="morning" name="doseTime"
+													checked>
+												<label for="morning">Morning</label>
+	
+												<input type="radio" id="noon" value="noon" name="doseTime">
+												<label for="noon">Noon</label>
+	
+												<input type="radio" id="evening" value="evening" name="doseTime">
+												<label for="evening">Evening</label>
+	
+	
+												<label>
+													Next dosage:
+													<input type="date" name="nextDose">
+												</label>
+												<label>
+													Med Note:
+													<input type="text" name="medNotes">
+												</label>
+												<button type="submit">Submit</button>
+							</form>
+							</span>
+						</div>
+							<!-- <div class="col-12"><span class="image fit"><img src="img/pic13.jpg" alt="" /></span></div> -->
+							<!-- <div class="col-4"><span class="image fit"><img src="img/pic01.jpg" alt="" /></span></div> -->
+						
+							
+								<% for(let i=0; i<medications.length; i++) {%>
+									<div class="col-4" id="<%=medications[i]._id%>">
+										
+										<section class="renderSections"  id="<%=medications[i].tookMed%>">
+											<h3 class="pgHead">
+												<%= medications[i].medicine %>
+											</h3>
+											<p>Purpose: <%= medications[i].purpose %>
+											</p>
+											<p>
+												Start Date: <%= medications[i].startDate %>
+											</p>
+
+											<p>Next dose: <%= medications[i].nextDose %>
+											</p>
+											<p>Recurrence: <%= medications[i].recurrence %>
+											</p>
+											<p>Time: <%= medications[i].doseTime %>
+											</p>
+											<p>Notes: <%= medications[i].medNotes %>
+											</p>
+
+											<span><i class="fa fa-trash" aria-hidden="true"></i></span>
+										
+											<span><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+											
+											
+										</section>
+									
+										
+										</div>
+									<% } %>
+
+						
+
+
+
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<!-- <div class="inner">
+							<section>
+								<h2>Get in touch</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<input type="text" name="name" id="name" placeholder="Name" />
+										</div>
+										<div class="field half">
+											<input type="email" name="email" id="email" placeholder="Email" />
+										</div>
+										<div class="field">
+											<textarea name="message" id="message" placeholder="Message"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="primary" /></li>
+									</ul>
+								</form>
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
+									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
+									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div> -->
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<!-- <script src="assets/js/main.js"></script> -->
+	<script src="mainTwo.js"></script>
+
+
+</body>
+
+</html>
