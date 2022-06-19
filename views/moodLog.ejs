@@ -61,11 +61,11 @@
 										
 										<h4 class="col-12 col-12-small">Today's Date</h4>
 										<div class="col-12 col-12-xsmall">
-											<input type="date" name="date"  placeholder="Date" />
+											<input type="date" name="date"  placeholder="Date" required />
 										</div>
 										<h4 class="col-12 col-12-small">Time</h4>
 										<div class="col-12 col-12-xsmall">
-											<input type="time" name="time"  placeholder="Time" />
+											<input type="time" name="time"  placeholder="Time" required />
 										</div>
 									<!-- <div class="row gtr-uniform">
 										<div class="col-6 col-12-xsmall">
@@ -84,10 +84,15 @@
 											</select>
 										</div> -->
 
+										<h4 class="col-12 col-12-small">How much sleep? </h4>
+										<div class="col-12 col-12-xsmall">
+											<input type="number" name="sleep"  placeholder="Hours of sleep" required />
+										</div>
+
 										<h4 class="col-12 col-12-small">How are you feeling: </h4>
 
 										<div class="col-2 col-12-small">
-											<input type="radio" id="Amazing" name="mood" value="Amazing" checked>
+											<input type="radio" id="Amazing" name="mood" value="Amazing" checked required>
 											<label for="Amazing">Amazing</label>
 										</div>
 										<div class="col-2 col-12-small">
@@ -103,7 +108,7 @@
 
 										<div class="col-2 col-12-small">
 											<input type="radio" id="Sad" name="mood" value="Sad">
-											<label for="Sad">Sad</label>
+											<label for="Sad">Poor</label>
 										</div>
 										<div class="col-2 col-12-small">
 
@@ -111,14 +116,64 @@
 											<label for="Terrible">Terrible</label>
 										</div>
 
-										<div class="col-12 col-12-xsmall">
-											<label for="timeSlept">Time Slept</label>
-											<input type="number" name="timeSlept" id="timeSlept" placeholder="Time Slept" />
+										<h4 class="col-12 col-12-small">Stress Level: </h4>
+
+										<div class="col-2 col-12-small">
+											<input type="radio" id="stress5" name="stress" value='1, Very High' value="Very High" checked required>
+											<label for="stress5">Very High</label>
 										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="stress4" name="stress" value="4, High">
+											<label for="stress4">High</label>
+										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="stress3" name="stress" value="3, Mid" >
+											<label for="stress3">Mid</label>
+										</div>
+
+										<div class="col-2 col-12-small">
+											<input type="radio" id="stress2" name="stress" value="2, Low">
+											<label for="stress2">Low</label>
+										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="stress1" name="stress" value="1, Very Low" >
+											<label for="stress1">Very Low</label>
+										</div>
+
+										<h4 class="col-12 col-12-small">Energy Level: </h4>
+
+										<div class="col-2 col-12-small">
+											<input type="radio" id="Very High" name="energy" value="5, Very High" checked>
+											<label for="5" required>Very High</label>
+										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="4" name="energy" value="4, High">
+											<label for="4">High</label>
+										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="3" name="energy" value="3, Mid" >
+											<label for="3">Mid</label>
+										</div>
+
+										<div class="col-2 col-12-small">
+											<input type="radio" id="2" name="energy" value="2, Low">
+											<label for="2">Low</label>
+										</div>
+										<div class="col-2 col-12-small">
+
+											<input type="radio" id="1" name="energy" value="1, Very Low" >
+											<label for="1">Very Low</label>
+										</div>
+
 
 										<h4 class="col-12 col-12-small">Took Medications</h4>
 										<div class="col-2 col-12-small">
-											<input type="radio" id="Yes" name="medsTaken" value="Yes">
+											<input type="radio" id="Yes" name="medsTaken" value="Yes" required>
 											<label for="Yes">Yes</label>
 										</div>
 										<div class="col-2 col-12-small">
@@ -136,7 +191,7 @@
 									
 										<div class="col-2 col-12-small">
 											<input type="checkbox" id="physicalActivity"
-											value="Physcial Acitivies" name="activities">
+											value="Physcial Acitivies" name="activities" >
 											<label for="physicalActivity">Physical Activity</label>
 										</div>
 										<div class="col-2 col-12-small">
@@ -165,7 +220,7 @@
 											<label for="hobby">Enjoyed a hobby</label>
 										</div>
 										<div class="col-2 col-12-small">
-											<input type="checkbox" id="hobby"
+											<input type="checkbox" id="cleaned"
 											value="Cleaned up" name="activities" >
 											<label for="cleaned">Cleaned up</label>
 										</div>
@@ -186,46 +241,43 @@
 						</div>
 					</div>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<!-- <div class="inner">
-							<section>
-								<h2>Get in touch</h2>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<input type="text" name="name" id="name" placeholder="Name" />
-										</div>
-										<div class="field half">
-											<input type="email" name="email" id="email" placeholder="Email" />
-										</div>
-										<div class="field">
-											<textarea name="message" id="message" placeholder="Message"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send" class="primary" /></li>
-									</ul>
-								</form>
-							</section>
-							<section>
-								<h2>Follow</h2>
-								<ul class="icons">
-									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+					<% for(let i=0; i<moodLog.length; i++) {%>
+						<div class="col-4" id="<%=moodLog[i]._id%>">
+							
+							<section class="renderSections"  >
+
+								<h3 class="pgHead">
+									<%= moodLog[i].date %>
+								</h3>
+								<p>Mood: <%= moodLog[i].mood %>
+								</p>
+								<p>Stress: <%= moodLog[i].stress[1] %> <%= moodLog[i].stress[0] %></p>
+								<p>Energy: <%= moodLog[i].energy[1] %> <%= moodLog[i].energy[0] %></p>
+
+								<p>Activities that day: 
+									<ul>
+										<li><%= moodLog[i].activities[0] %></li>
+									<li><%= moodLog[i].activities[1] %></li>
+									<li><%= moodLog[i].activities[2] %></li>
+									
 								</ul>
+								</p>
+								</p>
+							
+								<p>Notes: <%= moodLog[i].moodLog %>
+								</p>
+
+								<span><i class="fa fa-trash" aria-hidden="true"></i></span>
+							
+								<span><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+								
+								
 							</section>
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div> -->
-					</footer>
+						
+							
+							</div>
+						<% } %>
+
 
 			</div>
 

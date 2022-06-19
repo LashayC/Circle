@@ -8,11 +8,40 @@ module.exports = function(app, passport, db) {
 
 const {ObjectId} = require('mongodb') //gives access to _id in mongodb
 
-//Collection Names
+//Collection Names =============================================================
 const medCollection = 'medications'
 const moodCollection = 'moodLog'
 const apptCollection = 'appointments'
 
+//Route functions ===============================================================
+
+/* Gets the days in a given year and month.
+
+function getAllDaysInMonth(year, month) {
+  const date = new Date(year, month, 1);
+
+  const dates = [];
+
+  while (date.getMonth() === month) {
+    dates.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+
+  return dates;
+}
+
+const now = new Date();
+
+// 👇️ all days of the current month
+console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));
+
+const date = new Date('2022-03-24');
+
+// 👇️ All days in March of 2022
+console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
+
+Credit to: https://bobbyhadz.com/blog/javascript-get-all-dates-in-month
+*/
 
 // normal routes ===============================================================
 
@@ -109,9 +138,9 @@ const apptCollection = 'appointments'
 // Medication Section ==============================================
 
   app.get('/medication', isLoggedIn, function(req, res) {
-    db.collection(medCollection).find({name: req.user.local.email}).toArray((err, result) => {
+    db.collection(medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
       if (err) return console.log(err)
-      console.log(result)
+      //console.log(result)
       // let medCollection = result.filter(doc => doc.name === req.user.local.email)
 
       res.render('medication.ejs', {
@@ -125,7 +154,7 @@ const apptCollection = 'appointments'
 
 
 app.post('/addMedication', (req, res) => {
-  db.collection(medCollection).insertOne({name: req.body.name, medicine: req.body.medicine, purpose: req.body.purpose, startDate: req.body.startDate, recurrence: req.body.recurrence, doseTime: req.body.doseTime, nextDose: req.body.nextDose, medNotes: req.body.medNotes, tookMed: false}, (err, result) => {
+  db.collection(medCollection).insertOne({name: req.body.name, medicine: req.body.medicine, purpose: req.body.purpose, startDate: req.body.startDate, recurrence: req.body.recurrence, doseTime: req.body.doseTime, nextDose: req.body.nextDose, medNotes: req.body.medNotes, tookMed: false, createdBy: req.user._id}, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -178,9 +207,9 @@ app.delete('/deleteMed', (req, res) => {
 //Mood Log ======================================================
 
 app.get('/moodLog', isLoggedIn, function(req, res) {
-  db.collection(moodCollection).find().toArray((err, result) => {
+  db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
-    console.log(result)
+    //console.log(result)
     //let myPlants = result.filter(doc => doc.name === req.user.local.email)
 
     res.render('moodLog.ejs', {
@@ -193,12 +222,21 @@ app.get('/moodLog', isLoggedIn, function(req, res) {
 
 
 app.post('/addMood', (req, res) => {
+  // let stressObj = JSON.stringify(req.body.stress)
+  let stressArray = req.body.stress.split(', ')
+  let energyArray = req.body.energy.split(', ')
+  // console.log('stressObject', stressObj)
   db.collection(moodCollection).insertOne({date: req.body.date,
       time: req.body.time, 
       mood: req.body.mood,  
       medsTaken: req.body.medsTaken, 
       activities: req.body.activities, 
-      moodNotes: req.body.moodNotes}, (err, result) => {
+      moodNotes: req.body.moodNotes,
+      stress: stressArray,
+      energy: energyArray,
+      sleep: req.body.sleep,
+      createdBy: req.user._id
+      }, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -210,9 +248,9 @@ app.post('/addMood', (req, res) => {
 //Appointment Log ======================================================
 
 app.get('/appointments', isLoggedIn, function(req, res) {
-  db.collection(apptCollection).find().toArray((err, result) => {
+  db.collection(apptCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
-    console.log(result)
+    //console.log(result)
     //let myPlants = result.filter(doc => doc.name === req.user.local.email)
 
     res.render('appointments.ejs', {
@@ -231,7 +269,8 @@ app.post('/addAppointments', (req, res) => {
       appointmentType: req.body.appointmentType, 
       providerName: req.body.providerName, 
       reasonNotes: req.body.reasonNotes, 
-      complete: false}, (err, result) => {
+      complete: false,  
+      createdBy: req.user._id}, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -240,16 +279,48 @@ app.post('/addAppointments', (req, res) => {
 })
 
 //Insights Page ======================================================
+//isDoctor add plays off role in DB(added manually for now), 
+//can set 
 
+//Once roles are set, can either check inside conditional with 'isDoctor' callback or by doing if conditional within get that uses 'req.user.local.role
+
+//if you want to use same route for dif roles.
+
+//grab insights assoc w/ account
 app.get('/insights', isLoggedIn, function(req, res) {
-  db.collection(apptCollection).find().toArray((err, result) => {
+  //console.log(req.user.local.role)
+  db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
-    console.log(result)
-    //let myPlants = result.filter(doc => doc.name === req.user.local.email)
+    console.log('mood for insights', result)
+
+    // function getAllDaysInMonth(year, month) {
+    //   const date = new Date(year, month, 1);
+    
+    //   const dates = [];
+    
+    //   while (date.getMonth() === month) {
+    //     dates.push(new Date(date));
+    //     date.setDate(date.getDate() + 1);
+    //   }
+    
+    //   return dates;
+    // }
+    
+    // const now = new Date();
+    
+    // // 👇️ all days of the current month
+    // console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));
+    
+    // const date = new Date('2022-03-24');
+    
+    // // 👇️ All days in March of 2022
+    // console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
+
 
     res.render('insights.ejs', {
       user : req.user, 
-      appointments: result
+      appointments: result,
+      moodLog:result
     
     })
   })
@@ -257,13 +328,15 @@ app.get('/insights', isLoggedIn, function(req, res) {
 
 
 app.post('/insights', (req, res) => {
+  //console.log(req.body)
   db.collection(apptCollection).insertOne({date: req.body.date,
       time: req.body.time, 
       location: req.body.location,  
       appointmentType: req.body.appointmentType, 
       providerName: req.body.providerName, 
       reasonNotes: req.body.reasonNotes, 
-      complete: false}, (err, result) => {
+      complete: false, 
+      createdBy: req.user._id }, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -315,6 +388,7 @@ app.post('/insights', (req, res) => {
         let user            = req.user;
         user.local.email    = undefined;
         user.local.password = undefined;
+        
         user.save(function(err) {
             res.redirect('/profile');
         });
@@ -329,3 +403,12 @@ function isLoggedIn(req, res, next) {
 
     res.redirect('/');
 }
+
+// (Middleware) CHECKS FOR ROLE ON USER
+function isDoctor(req, res, next){
+    if(req.user.local.role === 'doctor'){
+      return next()
+    }
+    res.redirect('/')
+}
+
