@@ -178,7 +178,7 @@
 								return 'Amazing'
 							break
 							default:
-								console.log(index)
+								//console.log(index)
 								return undefined
 						}
 					
@@ -220,16 +220,10 @@
 	const myChart1 = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Mon',
-				'Tues',
-				'Wed',
-				'Thurs',
-				'Fri',
-				'Sat',
-				'Sun'],
+        labels: [<%= daysInMonth %>] ,
         datasets: [{
             label: 'Sleep',
-            data: [2, 1, 5, 5, 5, 3, 2],
+            data: [2, 1, 5, 5, 5, 8, 2],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -253,33 +247,21 @@
         scales: {
             y: {
                 beginAtZero: true,
-				ticks: {
-					callback: function(value, index){
-						console.log(index)
-						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
+				// ticks: {
+				// 	callback: function(value, index){
+				// 		console.log( 'value:', value = index)
+				// 	// if(value % 2 == 0){
+				// 	// 	return ''
+				// 	// }
+
+				// 	// if(index == value){
+				// 	// 	return index = value
+				// 	// }
 						
-						switch(index){
-							case 2:
-								return 'Terrible'
-							break
-							case 4:
-								return 'Poor'
-							break
-							case 6:
-								return 'Okay'
-							break
-							case 8:
-								return 'Good'
-							break
-							case 10:
-								return 'Amazing'
-							break
-							default:
-								return undefined
-						}
+						
 					
-					}
-				}
+				// 	}
+				// }
             }
         }
     }

@@ -15,7 +15,7 @@ const apptCollection = 'appointments'
 
 //Route functions ===============================================================
 
-/* Gets the days in a given year and month.
+/* Gets the days in a given year and month.++++++++
 
 function getAllDaysInMonth(year, month) {
   const date = new Date(year, month, 1);
@@ -40,9 +40,25 @@ const date = new Date('2022-03-24');
 // 👇️ All days in March of 2022
 console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
 
+
 Credit to: https://bobbyhadz.com/blog/javascript-get-all-dates-in-month
 */
 
+/* Get string weekdays and month, etc from date.
+
+const today = new Date()
+today.toLocaleString('default', { month: 'long' }) ///Get the long format October
+
+today.toLocaleString('default', { month: 'short' }) ///Using the short format for the date, I get “Oct”:
+
+
+
+let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };/// Request a weekday along with a long date
+
+console.log(date.toLocaleString('de-DE', options));/// → "Donnerstag, 20. Dezember 2012"
+
+Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
+*/
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -293,34 +309,45 @@ app.get('/insights', isLoggedIn, function(req, res) {
     if (err) return console.log(err)
     console.log('mood for insights', result)
 
-    // function getAllDaysInMonth(year, month) {
-    //   const date = new Date(year, month, 1);
+    // date function ---------------------------------
+    function getAllDaysInMonth(year, month) {
+      const date = new Date(year, month, 1);
     
-    //   const dates = [];
+      const dates = [];
     
-    //   while (date.getMonth() === month) {
-    //     dates.push(new Date(date));
-    //     date.setDate(date.getDate() + 1);
-    //   }
+      while (date.getMonth() === month) {
+        dates.push(new Date(date).getDate());
+        //date.setDate(date.getDate() + 1);
+        date.setDate(date.getDate() + 1);
+      }
     
-    //   return dates;
-    // }
+      return dates;
+    }
     
-    // const now = new Date();
+    const now = new Date();
     
-    // // 👇️ all days of the current month
-    // console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));
+    let currentMonth = now.toLocaleString('default', { month: 'long' }) ///Get the long format October
     
+    let daysInMonth = getAllDaysInMonth(now.getFullYear(), now.getMonth()) //Set variable to array of days in month
+
+    console.log('days in month:', daysInMonth, 'Current Month is:', currentMonth)
+
+    // /console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));// 👇️ all days of the current month
+    
+
     // const date = new Date('2022-03-24');
     
     // // 👇️ All days in March of 2022
     // console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
 
+    // sleep function ----------------------------------------------------------------------
+    let sleepNumbers = []
 
     res.render('insights.ejs', {
       user : req.user, 
       appointments: result,
-      moodLog:result
+      moodLog:result,
+      daysInMonth
     
     })
   })
