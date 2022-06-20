@@ -1,6 +1,8 @@
 const user = require("./models/user");
-const dayjs = require('dayjs')
-//import dayjs from 'dayjs' // ES 2015
+const dayjs = require('dayjs') //date manipulation
+const customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat)
+
 
 let todaysDate =  dayjs().format('YYYY-MM-DD')
 //console.log('todays big oldate is', todaysDate)
@@ -128,12 +130,34 @@ const apptCollection = 'appointments'
         // let weeklyList = []
         // let monthlyList = []
 
+        console.log(dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') === dayjs().format('dddd'))
+
         if( result[i].recurrence == 'daily' && result[i].endDate == '' && todaysDate >= result[i].startDate){
+          //conditional for daily recurrence, no end date, and todays date greater than start date.
           todaysMeds.push(result[i].medicine)
 
         }else if(result[i].recurrence == 'daily' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate ){
           todaysMeds.push(result[i].medicine)
 
+        }else if( result[i].recurrence == 'weekly' && result[i].endDate == '' && todaysDate >= result[i].startDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') === dayjs().format('dddd')){
+          //conditional for if recurrence weekly, no endate, todays date greater than start date, and todays day of the week is same as one in start date
+          todaysMeds.push(result[i].medicine)
+
+        }else if(result[i].recurrence == 'weekly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs().format('dddd')){
+
+          todaysMeds.push(result[i].medicine)
+          
+        }else if(result[i].recurrence == 'daily' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate ){
+          todaysMeds.push(result[i].medicine)
+
+        }else if( result[i].recurrence == 'monthly' && result[i].endDate == '' && todaysDate >= result[i].startDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('D') === dayjs().format('D')){
+          //conditional for if recurrence monthly, no endate, todays date greater than start date, and todays day of month is same as one in start date
+          todaysMeds.push(result[i].medicine)
+
+        }else if(result[i].recurrence == 'monthly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('D') == dayjs().format('D')){
+
+          todaysMeds.push(result[i].medicine)
+          
         }
         
       }
@@ -141,20 +165,21 @@ const apptCollection = 'appointments'
      
 
 
-      for(let i = 0; i < result.length; i++){
-        let j = 0
-        j += 7
+      // for(let i = 0; i < result.length; i++){
+      //   let j = 0
+      //   j += 7
       
-        if( result[i].recurrence == 'weekly' && result[i].endDate == '' && todaysDate >= result[i].startDate){
-          dayjs().for
-          dayjs().add(j, 'day').format('YYYY-MM-DD') === todaysMeds.push(result[i].medicine)
+      //   if( result[i].recurrence == 'weekly' && result[i].endDate == '' && todaysDate >= result[i].startDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs.format('dddd')){
 
-        }else if(result[i].recurrence == 'weekly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate ){
-          todaysMeds.push(result[i].medicine)
+      //     todaysMeds.push(result[i].medicine)
+
+      //   }else if(result[i].recurrence == 'weekly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs.format('dddd')){
+
+      //     todaysMeds.push(result[i].medicine)
           
-        }
+      //   }
         
-      }
+      // }
       
 
       console.log('todays medications', todaysMeds)
@@ -164,6 +189,9 @@ const apptCollection = 'appointments'
       console.log('is dayjs greater than yesterdays written date', dayjs().format('YYYY-MM-DD') > '2022-06-18')
       console.log('is dayjs less than tomorrows written date', dayjs().format('YYYY-MM-DD') < '2022-06-20')
       console.log('add days to day.js check: returns 19 + 4 returns 23', dayjs().add(4, 'day').format('YYYY-MM-DD'))
+      console.log('check if dayjs can take given date and pull day of week from it', dayjs('2022-06-15', 'YYYY-MM-DD').format('dddd'))
+      console.log('check if dayjs can take todays date and pull day of week from it', dayjs().format('dddd'))
+
       res.render('medication.ejs', {
         user : req.user, 
         medications: result, 
