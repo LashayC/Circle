@@ -64,10 +64,11 @@
 				<h1>Medications</h1>
 				<section class="image main">
 					<h2>Todays Meds: </h2>
-							<% for(let i=0; i<medications.length; i++) {%>
-								<span>
-									<%= todaysDate == medications[i].nextDose ? medications[i].medicine : '' %>
-								</span>
+							<% for(let i=0; i<todaysMeds.length; i++) {%>
+								<ul>
+									<li><%= todaysMeds[i] %></li>
+								</ul>
+								
 								<% } %>
 							
 				</section>
@@ -80,16 +81,22 @@
 							<form action="/addMedication" method="POST">
 								<input hidden value="<%= user.local.email %>" name="name">
 								<input hidden value="true" name="tookMed">
-								<input type="text" name="medicine" placeholder="Name of Medicine">
-								<input type="text" name="purpose" placeholder="What's the purpose?">
+								<input type="text" name="medicine" placeholder="Name of Medicine" required>
+								<input type="text" name="purpose" placeholder="What's the purpose?" required>
 	
 								<label>
 									Start Date:
-									<input type="date" name="startDate">
+									<input type="date" name="startDate" required>
 								</label>
 	
+								<label>
+									End Date:
+									<input type="date" name="endDate">
+								</label>
+								<p>Leave field empty if no End Date</p>
+
 								<label>How often:<label>
-										<input type="radio" id="daily" value="daily" name="recurrence" checked>
+										<input type="radio" id="daily" value="daily" name="recurrence" checked required>
 										
 										<label for="daily">Daily</label>
 	
@@ -98,8 +105,10 @@
 	
 										<input type="radio" id="monthly" value="monthly" name="recurrence">
 										<label for="monthly">Monthly</label>
+
+										<input type="text" name="dosage" placeholder="ex: 100 mg">
 	
-										<label>Time of Dose:<label>
+										<!-- <label>Time of Dose:<label>
 												<input type="radio" id="morning" value="morning" name="doseTime"
 													checked>
 												<label for="morning">Morning</label>
@@ -109,12 +118,12 @@
 	
 												<input type="radio" id="evening" value="evening" name="doseTime">
 												<label for="evening">Evening</label>
-	
-	
+	 -->
+<!-- 	
 												<label>
 													Next dosage:
 													<input type="date" name="nextDose">
-												</label>
+												</label> -->
 												<label>
 													Med Note:
 													<input type="text" name="medNotes">

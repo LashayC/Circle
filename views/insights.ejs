@@ -220,7 +220,7 @@
 	const myChart1 = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [<%= daysInMonth %>] ,
+        labels: ['days in month'] ,
         datasets: [{
             label: 'Sleep',
             data: [2, 1, 5, 5, 5, 8, 2],
@@ -244,24 +244,39 @@
         }]
     },
     options: {
+		responsive: true,
         scales: {
+			x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'October placeholder',
+        //   color: '#911',
+        //   font: {
+        //     family: 'Comic Sans MS',
+        //     size: 20,
+        //     weight: 'bold',
+        //     lineHeight: 1.2,
+        //   },
+          padding: {top: 0, left: 0, right: 0, bottom: 0}
+        }
+      },
             y: {
                 beginAtZero: true,
-				// ticks: {
-				// 	callback: function(value, index){
-				// 		console.log( 'value:', value = index)
-				// 	// if(value % 2 == 0){
-				// 	// 	return ''
-				// 	// }
-
-				// 	// if(index == value){
-				// 	// 	return index = value
-				// 	// }
-						
-						
-					
-				// 	}
-				// }
+				dispplay:true,
+				title:{
+					display:true, 
+					text: 'Hours of Sleep',
+          			//color: '#191',
+					// font: {
+					// 	family: 'Times', 
+					// 	size: 20,
+					// 	style: 'normal',
+					// 	lineHeight: 1.2
+					// },
+					padding: {top: 30, left: 0, right: 0, bottom: 0}
+				}
+				
             }
         }
     }

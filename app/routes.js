@@ -3,7 +3,7 @@ const dayjs = require('dayjs')
 //import dayjs from 'dayjs' // ES 2015
 
 let todaysDate =  dayjs().format('YYYY-MM-DD')
-
+//console.log('todays big oldate is', todaysDate)
 module.exports = function(app, passport, db) {
 
 const {ObjectId} = require('mongodb') //gives access to _id in mongodb
@@ -15,50 +15,7 @@ const apptCollection = 'appointments'
 
 //Route functions ===============================================================
 
-/* Gets the days in a given year and month.++++++++
 
-function getAllDaysInMonth(year, month) {
-  const date = new Date(year, month, 1);
-
-  const dates = [];
-
-  while (date.getMonth() === month) {
-    dates.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-
-  return dates;
-}
-
-const now = new Date();
-
-// 👇️ all days of the current month
-console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));
-
-const date = new Date('2022-03-24');
-
-// 👇️ All days in March of 2022
-console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
-
-
-Credit to: https://bobbyhadz.com/blog/javascript-get-all-dates-in-month
-*/
-
-/* Get string weekdays and month, etc from date.
-
-const today = new Date()
-today.toLocaleString('default', { month: 'long' }) ///Get the long format October
-
-today.toLocaleString('default', { month: 'short' }) ///Using the short format for the date, I get “Oct”:
-
-
-
-let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };/// Request a weekday along with a long date
-
-console.log(date.toLocaleString('de-DE', options));/// → "Donnerstag, 20. Dezember 2012"
-
-Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
-*/
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -71,7 +28,7 @@ Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
     app.get('/profile', isLoggedIn, function(req, res) {
         db.collection(medCollection).find().toArray((err, result) => {
           if (err) return console.log(err)
-          console.log(result)
+          //console.log(result)
 
          
 
@@ -102,7 +59,7 @@ Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
     app.get('/home', isLoggedIn, function(req, res) {
       db.collection(medCollection).find().toArray((err, result) => {
         if (err) return console.log(err)
-        console.log(result)
+        //console.log(result)
        
 
         res.render('home.ejs', {
@@ -158,11 +115,59 @@ Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
       if (err) return console.log(err)
       //console.log(result)
       // let medCollection = result.filter(doc => doc.name === req.user.local.email)
+      //medication recurrence functions Daily/ Weekly/ Monthly
+      let startingDate = 0
+      let endingDate = 0
+      let todaysMeds = []
 
+      for(let i = 0; i < result.length; i++){
+        // result[i].startDate
+        // result[i].endDate
+        //console.log('all enddates',result[i].endDate)
+        // let dailyList = []
+        // let weeklyList = []
+        // let monthlyList = []
+
+        if( result[i].recurrence == 'daily' && result[i].endDate == '' && todaysDate >= result[i].startDate){
+          todaysMeds.push(result[i].medicine)
+
+        }else if(result[i].recurrence == 'daily' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate ){
+          todaysMeds.push(result[i].medicine)
+
+        }
+        
+      }
+
+     
+
+
+      for(let i = 0; i < result.length; i++){
+        let j = 0
+        j += 7
+      
+        if( result[i].recurrence == 'weekly' && result[i].endDate == '' && todaysDate >= result[i].startDate){
+          dayjs().for
+          dayjs().add(j, 'day').format('YYYY-MM-DD') === todaysMeds.push(result[i].medicine)
+
+        }else if(result[i].recurrence == 'weekly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate ){
+          todaysMeds.push(result[i].medicine)
+          
+        }
+        
+      }
+      
+
+      console.log('todays medications', todaysMeds)
+
+      console.log('todays big ole date', dayjs().format('YYYY-MM-DD'))
+      console.log('is dayjs equal to written date', dayjs().format('YYYY-MM-DD') == '2022-06-19')
+      console.log('is dayjs greater than yesterdays written date', dayjs().format('YYYY-MM-DD') > '2022-06-18')
+      console.log('is dayjs less than tomorrows written date', dayjs().format('YYYY-MM-DD') < '2022-06-20')
+      console.log('add days to day.js check: returns 19 + 4 returns 23', dayjs().add(4, 'day').format('YYYY-MM-DD'))
       res.render('medication.ejs', {
         user : req.user, 
         medications: result, 
-        todaysDate
+        todaysMeds
         
       })
     })
@@ -170,7 +175,16 @@ Credit to: https://flaviocopes.com/how-to-get-month-from-javascript-date/
 
 
 app.post('/addMedication', (req, res) => {
-  db.collection(medCollection).insertOne({name: req.body.name, medicine: req.body.medicine, purpose: req.body.purpose, startDate: req.body.startDate, recurrence: req.body.recurrence, doseTime: req.body.doseTime, nextDose: req.body.nextDose, medNotes: req.body.medNotes, tookMed: false, createdBy: req.user._id}, (err, result) => {
+  db.collection(medCollection).insertOne({name: req.body.name, 
+    medicine: req.body.medicine, 
+    purpose: req.body.purpose, 
+    startDate: req.body.startDate, 
+    endDate: req.body.endDate, 
+    recurrence: req.body.recurrence, 
+    dosage: req.body.dosage, 
+    medNotes: req.body.medNotes, 
+    tookMed: false, 
+    createdBy: req.user._id}, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -228,8 +242,9 @@ app.get('/moodLog', isLoggedIn, function(req, res) {
     //console.log(result)
     //let myPlants = result.filter(doc => doc.name === req.user.local.email)
 
+    console.log('user from db on moodLog', req.user)
     res.render('moodLog.ejs', {
-      user : req.user, 
+      user : req, 
       moodLog: result
     
     })
@@ -307,38 +322,18 @@ app.get('/insights', isLoggedIn, function(req, res) {
   //console.log(req.user.local.role)
   db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
-    console.log('mood for insights', result)
-
+    //console.log('mood for insights', result.length)
+    
     // date function ---------------------------------
-    function getAllDaysInMonth(year, month) {
-      const date = new Date(year, month, 1);
-    
-      const dates = [];
-    
-      while (date.getMonth() === month) {
-        dates.push(new Date(date).getDate());
-        //date.setDate(date.getDate() + 1);
-        date.setDate(date.getDate() + 1);
-      }
-    
-      return dates;
+    let sleepDates = []
+    for(let i = 0; i < result.length; i++){
+      sleepDates.push(new Date(new Date(result[i].date).getTime() + 12 * 60 * 60 * 1000 ).getDate())
     }
-    
-    const now = new Date();
-    
-    let currentMonth = now.toLocaleString('default', { month: 'long' }) ///Get the long format October
-    
-    let daysInMonth = getAllDaysInMonth(now.getFullYear(), now.getMonth()) //Set variable to array of days in month
 
-    console.log('days in month:', daysInMonth, 'Current Month is:', currentMonth)
-
-    // /console.log(getAllDaysInMonth(now.getFullYear(), now.getMonth()));// 👇️ all days of the current month
+    console.log(sleepDates)
     
 
-    // const date = new Date('2022-03-24');
-    
-    // // 👇️ All days in March of 2022
-    // console.log(getAllDaysInMonth(date.getFullYear(), date.getMonth()));
+
 
     // sleep function ----------------------------------------------------------------------
     let sleepNumbers = []
@@ -347,7 +342,7 @@ app.get('/insights', isLoggedIn, function(req, res) {
       user : req.user, 
       appointments: result,
       moodLog:result,
-      daysInMonth
+      // daysInMonth
     
     })
   })
