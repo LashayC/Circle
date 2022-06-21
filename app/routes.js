@@ -280,21 +280,48 @@ app.get('/moodLog', isLoggedIn, function(req, res) {
 });
 
 
+// app.post('/addMood', (req, res) => {
+//   // let stressObj = JSON.stringify(req.body.stress)
+//   let stressArray = req.body.stress.split(', ')
+//   let energyArray = req.body.energy.split(', ')
+//   let moodArray = req.body.mood.split(', ')
+// // mood{'Happy': 5, 'Sad':1}
+
+//   // console.log('stressObject', stressObj)
+//   db.collection(moodCollection).insertOne({date: req.body.date,
+//       time: req.body.time, 
+//       mood: [moodArray],  
+//       medsTaken: req.body.medsTaken, 
+//       activities: req.body.activities, 
+//       moodNotes: req.body.moodNotes,
+//       stress: [stressArray],
+//       energy: [energyArray],
+//       sleep: req.body.sleep,
+//       createdBy: req.user._id
+//       }, (err, result) => {
+//     if (err) return console.log(err)
+//     //console.log(result)
+//     console.log('saved to database')
+//     res.redirect('/moodLog')
+//   })
+// })
+
 app.post('/addMood', (req, res) => {
   // let stressObj = JSON.stringify(req.body.stress)
-  let stressArray = req.body.stress.split(', ')
-  let energyArray = req.body.energy.split(', ')
+  // let stressArray = req.body.stress.split(', ')
+  // let energyArray = req.body.energy.split(', ')
+  // let moodArray = req.body.mood.split(', ')
+// mood{'Happy': 5, 'Sad':1}
+
   // console.log('stressObject', stressObj)
   db.collection(moodCollection).insertOne({date: req.body.date,
-      time: req.body.time, 
-      mood: req.body.mood,  
-      medsTaken: req.body.medsTaken, 
-      activities: req.body.activities, 
-      moodNotes: req.body.moodNotes,
-      stress: stressArray,
-      energy: energyArray,
+      createdBy: req.user._id,
       sleep: req.body.sleep,
-      createdBy: req.user._id
+      medsTaken: [], 
+      activities: [], 
+      mood: [],  
+      stress: [],
+      energy: [],
       }, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
@@ -303,6 +330,53 @@ app.post('/addMood', (req, res) => {
   })
 })
 
+
+app.post('/updateMood', (req, res) => {
+  db.collection(moodCollection).updateOne({date: req.body.date},
+  {
+    $push: {
+     stress: req.body.stress,
+     mood: req.body.mood,
+     energy: req.body.energy
+    }
+  },
+   (err, result) => {
+    if (err) return console.log(err)
+    //console.log(result)
+    console.log('saved to database')
+    res.redirect('/moodLog')
+  })
+})
+
+app.post('/updateNotes', (req, res) => {
+  db.collection(moodCollection).updateOne({date: req.body.date},
+  {
+    $set: {
+     moodNotes: req.body.moodNotes
+    }
+  },
+   (err, result) => {
+    if (err) return console.log(err)
+    //console.log(result)
+    console.log('saved to database')
+    res.redirect('/moodLog')
+  })
+})
+
+app.post('/updateActivities', (req, res) => {
+  db.collection(moodCollection).updateOne({date: req.body.date},
+  {
+    $push: {
+     activities: req.body.activities
+    }
+  },
+   (err, result) => {
+    if (err) return console.log(err)
+    //console.log(result)
+    console.log('saved to database')
+    res.redirect('/moodLog')
+  })
+})
 
 //Appointment Log ======================================================
 
