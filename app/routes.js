@@ -4,7 +4,8 @@ const customParseFormat = require('dayjs/plugin/customParseFormat') //lets you g
 dayjs.extend(customParseFormat)
 const advancedFormat = require('dayjs/plugin/advancedFormat') //extends date formats able to be used
 dayjs.extend(advancedFormat)
-var weekOfYear = require('dayjs/plugin/weekOfYear')// lets you give week of year
+var weekOfYear = require('dayjs/plugin/weekOfYear');// lets you give week of year
+const { sortBy } = require("lodash");
 dayjs.extend(weekOfYear)
 
 let todaysDate =  dayjs().format('YYYY-MM-DD')
@@ -246,10 +247,12 @@ app.delete('/deleteMed', (req, res) => {
 //Mood Log ======================================================
 
 app.get('/moodLog', isLoggedIn, function(req, res) {
-  db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
+  db.collection(moodCollection, medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     //let myPlants = result.filter(doc => doc.name === req.user.local.email)
+
+    console.log('This is the result for Mood Collection AND Med Collection', result)
 
     console.log('user from db on moodLog', req.user)
     res.render('moodLog.ejs', {
@@ -315,7 +318,7 @@ app.post('/updateMood', (req, res) => {
   {
     $push: {
      stress: req.body.stress,
-     mood: req.body.mood,
+
      energy: req.body.energy
     }
   },
@@ -331,7 +334,8 @@ app.post('/updateNotes', (req, res) => {
   db.collection(moodCollection).updateOne({date: req.body.date},
   {
     $set: {
-     moodNotes: req.body.moodNotes
+      mood: req.body.mood,
+      moodNotes: req.body.moodNotes
     }
   },
    (err, result) => {
@@ -419,6 +423,8 @@ app.post('/addAppointments', (req, res) => {
 app.get('/insights', isLoggedIn, function(req, res) {
   //console.log(req.user.local.role)
   db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
+    db.collection(medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err2, medResult) => {
+
     if (err) return console.log(err)
     //console.log('mood for insights', result.length)
     
@@ -453,8 +459,105 @@ app.get('/insights', isLoggedIn, function(req, res) {
     console.log('this is the  week of the given month 2022-06-02', dayjs('2022-05-31', 'YYYY-MM-DD').week())
     console.log('this is moodDays of week and mood Data', moodDaysOfWeek, moodData)
 
+    // Med Streak ----------------------------------------------------------
+    let medStreak = 0
+
+    for(let i = 0; i < result.length; i++){
+      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() && result[i].medsTaken == 'Yes'){
+        medStreak += 1
+      } 
+    }
+    console.log('How many days of meds week 23', medStreak)
+    // Check In Streak ----------------------------------------------------------------------------
 
 
+    // Average Mood --------------------------------------------------------------------------------
+    let averageMood = 0
+    let moodCount = 0
+    let divMood = 0
+    for(let i = 0; i < result.length; i++){
+      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+        divMood += Number(result[i].mood[0])
+        moodCount ++
+      }
+
+    }
+    averageMood = Math.round(divMood / moodCount)
+    // Math.round(averageMood)
+
+    console.log('This is avg divMood and moodCount', divMood, moodCount)
+    console.log('This is avg mood', averageMood)
+
+
+    // Medication for Insights page-----------------------------------------
+    let todaysMeds = []
+    
+
+    for(let i = 0; i < medResult.length; i++){
+      // medResult[i].startDate
+      // medResult[i].endDate
+      //console.log('all enddates',medResult[i].endDate)
+      // let dailyList = []
+      // let weeklyList = []
+      // let monthlyList = []
+
+      console.log(dayjs(medResult[i].startDate, 'YYYY-MM-DD').format('dddd') === dayjs().format('dddd'))
+
+      if( medResult[i].recurrence == 'daily' && medResult[i].endDate == '' && todaysDate >= medResult[i].startDate){
+        //conditional for daily recurrence, no end date, and todays date greater than start date.
+        todaysMeds.push(medResult[i].medicine)
+
+      }else if(medResult[i].recurrence == 'daily' && todaysDate >= medResult[i].startDate && todaysDate <= medResult[i].endDate ){
+        todaysMeds.push(medResult[i].medicine)
+
+      }else if( medResult[i].recurrence == 'weekly' && medResult[i].endDate == '' && todaysDate >= medResult[i].startDate && dayjs(medResult[i].startDate, 'YYYY-MM-DD').format('dddd') === dayjs().format('dddd')){
+        //conditional for if recurrence weekly, no endate, todays date greater than start date, and todays day of the week is same as one in start date
+        todaysMeds.push(medResult[i].medicine)
+
+      }else if(medResult[i].recurrence == 'weekly' && todaysDate >= medResult[i].startDate && todaysDate <= medResult[i].endDate && dayjs(medResult[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs().format('dddd')){
+
+        todaysMeds.push(medResult[i].medicine)
+        
+      }else if(medResult[i].recurrence == 'daily' && todaysDate >= medResult[i].startDate && todaysDate <= medResult[i].endDate ){
+        todaysMeds.push(medResult[i].medicine)
+
+      }else if( medResult[i].recurrence == 'monthly' && medResult[i].endDate == '' && todaysDate >= medResult[i].startDate && dayjs(medResult[i].startDate, 'YYYY-MM-DD').format('D') === dayjs().format('D')){
+        //conditional for if recurrence monthly, no endate, todays date greater than start date, and todays day of month is same as one in start date
+        todaysMeds.push(medResult[i].medicine)
+
+      }else if(medResult[i].recurrence == 'monthly' && todaysDate >= medResult[i].startDate && todaysDate <= medResult[i].endDate && dayjs(medResult[i].startDate, 'YYYY-MM-DD').format('D') == dayjs().format('D')){
+
+        todaysMeds.push(medResult[i].medicine)
+        
+      }
+      
+    }
+
+
+    // Consecutive day function ---------------------------------------------------------------------------------
+
+    // let datesMood = result.map(el => dayjs(el.date, 'YYYY-MM-DD'))
+
+    // console.log('This is the datesMood', datesMood)
+    // let checkinStreak = 0
+
+    // for(let i = 0; i < datesMood.length; i++){
+    //   if(dayjs(datesMood[datesMood.length -1], 'YYYY-MM-DD').format('D'))
+    // }
+
+     let datesMood = result.map(el => el.date)
+
+     console.log('These are unsorted dates', datesMood)
+
+     datesMood.sort((a, b) => {return Date.parse(a) - Date.parse(b) });
+
+     console.log('These are sorted dates', datesMood)
+    console.log('This is the date for today', dayjs())
+
+    let checkinStreak = 0
+
+    for(let i = 0; i < result)
+         
     res.render('insights.ejs', {
       user : req.user, 
       moodLog:result,
@@ -462,9 +565,14 @@ app.get('/insights', isLoggedIn, function(req, res) {
       sleepDates,
       monthLabel, 
       moodDaysOfWeek,
-      moodData
+      moodData,
+      medStreak,
+      averageMood,
+      todaysMeds: todaysMeds
+
     
     })
+  })
   })
 });
 
