@@ -1,8 +1,11 @@
 const user = require("./models/user");
 const dayjs = require('dayjs') //date manipulation
-const customParseFormat = require('dayjs/plugin/customParseFormat')
+const customParseFormat = require('dayjs/plugin/customParseFormat') //lets you give dates and format them
 dayjs.extend(customParseFormat)
-
+const advancedFormat = require('dayjs/plugin/advancedFormat') //extends date formats able to be used
+dayjs.extend(advancedFormat)
+var weekOfYear = require('dayjs/plugin/weekOfYear')// lets you give week of year
+dayjs.extend(weekOfYear)
 
 let todaysDate =  dayjs().format('YYYY-MM-DD')
 //console.log('todays big oldate is', todaysDate)
@@ -435,7 +438,20 @@ app.get('/insights', isLoggedIn, function(req, res) {
 
 
     // mood chart ----------------------------------------------------------
-    let sleepNumbers = []
+    // let sleepNumbers = []
+    // dayjs('2018-06-27').week() // 26 //can get weeks of year.
+    let moodDaysOfWeek = []
+    let moodData =[]
+
+    for(let i = 0; i < result.length; i++){
+      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+        moodData.push(result[i].mood[0])
+        moodDaysOfWeek.push(dayjs(result[i].date, 'YYYY-MM-DD').format('ddd'))
+      }
+    }
+    console.log('this is the current week of the month', dayjs().week())
+    console.log('this is the  week of the given month 2022-06-02', dayjs('2022-05-31', 'YYYY-MM-DD').week())
+    console.log('this is moodDays of week and mood Data', moodDaysOfWeek, moodData)
 
 
 
@@ -444,7 +460,9 @@ app.get('/insights', isLoggedIn, function(req, res) {
       moodLog:result,
       sleepHours,
       sleepDates,
-      monthLabel
+      monthLabel, 
+      moodDaysOfWeek,
+      moodData
     
     })
   })

@@ -130,22 +130,23 @@
 		</div>
 		<script>
 			const labels = [
+				'Sun',
 				'Mon',
 				'Tues',
 				'Wed',
 				'Thurs',
 				'Fri',
-				'Sat',
-				'Sun'
+				'Sat'
+				
                 ];
               
                 const data = {
                   labels: labels,
                   datasets: [{
-                    label: 'Mood',
+                    label: 'Mood this Week',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 4, 3, 2, 0, 2, 3],
+                    data: [<%= moodData %>],
                   }]
                 };
               
@@ -161,20 +162,20 @@
 						// console.log(index)
 						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
 						// console.log(value)
-						switch(index){
+						switch(value){
 							case 0:
 								return 'Terrible'
 							break
-							case 2:
+							case 1:
 								return 'Poor'
 							break
-							case 4:
+							case 2:
 								return 'Okay'
 							break
-							case 6:
+							case 3:
 								return 'Good'
 							break
-							case 8:
+							case 4:
 								return 'Amazing'
 							break
 							default:
@@ -188,9 +189,7 @@
         }
 				  }
                 };
-              </script>
-
-                <script>
+             
                     const myChart = new Chart(
                     document.getElementById('myChart'),
                     config
@@ -207,9 +206,9 @@
 
 <!-- 1. Instantiate the Chart class. Pass in node/jQuery instance/ or 2D contect of canvas where chart will be drawn. -->
 <div class="container">
-<canvas id="myChart1" ></canvas></div>
+<canvas id="sleepChart" ></canvas></div>
 <script>
-	const ctx = document.getElementById('myChart1')
+	const ctx = document.getElementById('sleepChart')
 	/* Can also be written:
 	const ctx = document.getElementById('myChart');
 	const ctx = $('#myChart');
@@ -222,7 +221,7 @@
     data: {
         labels: [<%= sleepDates %>] ,
         datasets: [{
-            label: 'Sleep',
+            label: 'Sleep this Month',
             data: [<%= sleepHours %>],
             backgroundColor: [
                 // 'rgba(255, 99, 132, 0.2)',
@@ -284,6 +283,200 @@
 
 
 </script>
+
+<!-- Stress bar chart -->
+<div class="container">
+	<canvas id="stressChart" ></canvas>
+</div>
+
+<script>
+	
+	
+	
+	// const DATA_COUNT = 7;
+	// const NUMBER_CFG = {count: DATA_COUNT, min: -2, max: 2};
+
+	// const labels =[1, 2, -1, 0, 0, -2, -1];
+	const stressData = {
+		labels: ['Sun',
+				'Mon',
+				'Tues',
+				'Wed',
+				'Thurs',
+				'Fri',
+				'Sat'],
+				datasets: [
+					{
+						label: 'Stress',
+						data: [1, 2, -1, 1, 0, -2, -1],
+						borderColor: 'rgba(75, 192, 192, 1)',
+      backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      borderWidth: 2,
+      borderRadius: Number.MAX_VALUE,
+      borderSkipped: false,
+    },
+	
+]
+};
+
+const stressConfig = {
+type: 'bar',
+data: stressData,
+options: {
+	responsive: true,
+	plugins: {
+		legend: {
+	position: 'top',
+  },
+  title: {
+	  display: true,
+	  text: 'Stress this Week'
+	}
+},
+scales: {
+            y: {
+                beginAtZero: true,
+				ticks: {
+					callback: function(value, index){
+						// console.log(index)
+						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
+						// console.log(value)
+						switch(value){
+							case 2:
+								return 'Very High'
+							break
+							case 1:
+								return 'High'
+							break
+							case 0:
+								return 'Mid'
+							break
+							case -1:
+								return 'Low'
+							break
+							case -2:
+								return 'Very Low'
+							break
+							default:
+								//console.log(index)
+								return undefined
+						}
+					
+					}
+				}
+            }
+        }
+},
+};
+
+
+
+const stressChart = new Chart(
+document.getElementById('stressChart'),
+stressConfig
+);
+</script>
+
+
+
+<!-- Energy Chart -->
+
+<div class="container">
+	<canvas id="energyChart" ></canvas>
+</div>
+
+<script>
+	
+	
+	
+	const DATA_COUNT = 7;
+	const NUMBER_CFG = {count: DATA_COUNT, min: -2, max: 2};
+
+	// const labels =[1, 2, -1, 0, 0, -2, -1];
+	const energyData = {
+		labels: ['Sun',
+				'Mon',
+				'Tues',
+				'Wed',
+				'Thurs',
+				'Fri',
+				'Sat'],
+				datasets: [
+					{
+						label: 'Energy',
+						data: [-2, -1, 2, 0, -1, 2, -1],
+						borderColor: 'rgba(255, 159, 64, 1)',
+      backgroundColor: 'rgba(255, 159, 64, 0.5)',
+      borderWidth: 2,
+      borderRadius: Number.MAX_VALUE,
+      borderSkipped: false,
+    },
+	
+]
+};
+
+const energyConfig = {
+type: 'bar',
+data: energyData,
+options: {
+	responsive: true,
+	plugins: {
+		legend: {
+	position: 'top',
+  },
+  title: {
+	  display: true,
+	  text: 'Energy this Week'
+	}
+},
+scales: {
+            y: {
+                beginAtZero: true,
+				ticks: {
+					callback: function(value, index){
+						// console.log(index)
+						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
+						// console.log(value)
+						switch(value){
+							case 2:
+								return 'Very High'
+							break
+							case 1:
+								return 'High'
+							break
+							case 0:
+								return 'Mid'
+							break
+							case -1:
+								return 'Low'
+							break
+							case -2:
+								return 'Very Low'
+							break
+							default:
+								//console.log(index)
+								return undefined
+						}
+					
+					}
+				}
+            }
+        }
+},
+};
+
+
+
+const energyChart = new Chart(
+document.getElementById('energyChart'),
+energyConfig
+);
+</script>
+
+
+
+
+
 
 <h4>What you did this week:</h4>
 
