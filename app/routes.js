@@ -112,15 +112,14 @@ const apptCollection = 'appointments'
  
 // Medication Section ==============================================
 
-  app.get('/medication', isLoggedIn, function(req, res) {
-    db.collection(medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
-      if (err) return console.log(err)
-      //console.log(result)
-      // let medCollection = result.filter(doc => doc.name === req.user.local.email)
-      //medication recurrence functions Daily/ Weekly/ Monthly
-      let startingDate = 0
-      let endingDate = 0
-      let todaysMeds = []
+app.get('/medication', isLoggedIn, function(req, res) {
+  db.collection(medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
+    if (err) return console.log(err)
+    //console.log(result)
+    // let medCollection = result.filter(doc => doc.name === req.user.local.email)
+    //medication recurrence functions Daily/ Weekly/ Monthly
+    let todaysMeds = []
+    
 
       for(let i = 0; i < result.length; i++){
         // result[i].startDate
@@ -161,27 +160,6 @@ const apptCollection = 'appointments'
         }
         
       }
-
-     
-
-
-      // for(let i = 0; i < result.length; i++){
-      //   let j = 0
-      //   j += 7
-      
-      //   if( result[i].recurrence == 'weekly' && result[i].endDate == '' && todaysDate >= result[i].startDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs.format('dddd')){
-
-      //     todaysMeds.push(result[i].medicine)
-
-      //   }else if(result[i].recurrence == 'weekly' && todaysDate >= result[i].startDate && todaysDate <= result[i].endDate && dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') == dayjs.format('dddd')){
-
-      //     todaysMeds.push(result[i].medicine)
-          
-      //   }
-        
-      // }
-      
-
       console.log('todays medications', todaysMeds)
 
       console.log('todays big ole date', dayjs().format('YYYY-MM-DD'))
@@ -317,8 +295,6 @@ app.post('/addMood', (req, res) => {
   db.collection(moodCollection).insertOne({date: req.body.date,
       createdBy: req.user._id,
       sleep: req.body.sleep,
-      medsTaken: [], 
-      activities: [], 
       mood: [],  
       stress: [],
       energy: [],
@@ -363,6 +339,21 @@ app.post('/updateNotes', (req, res) => {
   })
 })
 
+app.post('/updateTookMed', (req, res) => {
+  db.collection(moodCollection).updateOne({date: req.body.date},
+  {
+    $set: {
+      medsTaken: req.body.medsTaken
+    }
+  },
+   (err, result) => {
+    if (err) return console.log(err)
+    //console.log(result)
+    console.log('saved to database')
+    res.redirect('/moodLog')
+  })
+})
+
 app.post('/updateActivities', (req, res) => {
   db.collection(moodCollection).updateOne({date: req.body.date},
   {
@@ -377,6 +368,8 @@ app.post('/updateActivities', (req, res) => {
     res.redirect('/moodLog')
   })
 })
+
+
 
 //Appointment Log ======================================================
 
@@ -411,7 +404,7 @@ app.post('/addAppointments', (req, res) => {
   })
 })
 
-//Insights Page ======================================================
+//Insights Page ====================================================================
 //isDoctor add plays off role in DB(added manually for now), 
 //can set 
 
@@ -426,25 +419,32 @@ app.get('/insights', isLoggedIn, function(req, res) {
     if (err) return console.log(err)
     //console.log('mood for insights', result.length)
     
-    // date function ---------------------------------
+    // Sleep Chart---------------------------------
+    let sleepHours = []
     let sleepDates = []
-    for(let i = 0; i < result.length; i++){
-      sleepDates.push(new Date(new Date(result[i].date).getTime() + 12 * 60 * 60 * 1000 ).getDate())
-    }
-
-    console.log(sleepDates)
+    let monthLabel = dayjs().format('MMMM')
     
+    for(let i = 0; i < result.length; i++){
+      if (dayjs().format('YYYY-MM') === dayjs(result[i].date, 'YYYY-MM-DD').format('YYYY-MM')){
+      sleepHours.push(result[i].sleep)
+      sleepDates.push(dayjs(result[i].date, 'YYYY-MM-DD').format('DD'))
+      }
+    }
+    console.log('this is sleepdays', sleepHours)
+    console.log('this is sleep dates', sleepDates)
 
 
-
-    // sleep function ----------------------------------------------------------------------
+    // mood chart ----------------------------------------------------------
     let sleepNumbers = []
+
+
 
     res.render('insights.ejs', {
       user : req.user, 
-      appointments: result,
       moodLog:result,
-      // daysInMonth
+      sleepHours,
+      sleepDates,
+      monthLabel
     
     })
   })
