@@ -335,7 +335,7 @@ app.post('/updateMood', (req, res) => {
 })
 
 app.post('/updateNotes', (req, res) => {
-  let moodSet = req.body.mood.split(', ')
+  // let moodSet = req.body.mood.split(', ')
   console.log('Post; update notes allit: ',req.body)
   db.collection(moodCollection).updateOne({date: req.body.date},
   {

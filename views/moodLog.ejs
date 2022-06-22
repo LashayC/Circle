@@ -11,7 +11,14 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- Favicon-->
+	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+	<!-- Core theme CSS (includes Bootstrap)-->
+	<link href="bootStyle.css" rel="stylesheet" />
+
+
 	<noscript>
 		<link rel="stylesheet" href="assets/css/noscript.css" />
 	</noscript>
@@ -62,6 +69,7 @@
 				<section>
 					<h2>Check-In</h2>
 					<form method="post" action="/addMood">
+						<div class="row gtr-uniform p-2">
 						<div class="row gtr-uniform">
 
 							<h4 class="col-12 col-12-small">Today's Date</h4>
@@ -81,22 +89,24 @@
 									<li><input type="reset" value="Reset" /></li>
 								</ul>
 							</div>
-				</div>			
+						</div>
+						</div>
 					</form>
 
-					
-					<form action="/updateMood" method="POST">
 
-						<h4 class="col-12 col-12-small">How are you feeling: </h4>
-						<div class="col-12 col-12-xsmall">
+					<form action="/updateMood" method="POST">
+						<div class="row gtr-uniform p-2">
+						<h4 class="col-8 col-8-small">How are you feeling: </h4>
+
+						<div class="col-2 col-2-xsmall align-middle">
 							<input type="date" name="date" placeholder="Date" required />
 						</div>
-
-						<div class="col-12 col-12-xsmall">
+						
+						<div class="col-2 col-2-xsmall">
 							<input type="time" name="time" id="time" placeholder="Time" required />
 						</div>
 
-						<!-- <div class="col-2 col-12-small">
+						<div class="col-2 col-12-small">
 							<input type="radio" id="Amazing" name="mood" value="4, Amazing" checked required>
 							<label for="Amazing">Amazing</label>
 						</div>
@@ -115,38 +125,14 @@
 							<input type="radio" id="poor" name="mood" value="1, Poor">
 							<label for="poor">Poor</label>
 						</div>
+
+
 						<div class="col-2 col-12-small">
 
 							<input type="radio" id="Terrible" name="mood" value="0, Terrible">
 							<label for="Terrible">Terrible</label>
-						</div> -->
-						<div class="col-2 col-12-small">
-							<input type="radio" id="Amazing" name="mood" value="4, Amazing" checked required>
-							<label for="Amazing">Amazing</label>
 						</div>
-						<div class="col-2 col-12-small">
-	
-							<input type="radio" id="Good" name="mood" value="3, Good">
-							<label for="Good">Good</label>
-						</div>
-						<div class="col-2 col-12-small">
-	
-							<input type="radio" id="Okay" name="mood" value="2, Okay">
-							<label for="Okay">Okay</label>
-						</div>
-	
-						<div class="col-2 col-12-small">
-							<input type="radio" id="poor" name="mood" value="1, Poor">
-							<label for="poor">Poor</label>
-						</div>
-						
-						
-						<div class="col-2 col-12-small">
-	
-							<input type="radio" id="Terrible" name="mood" value="0, Terrible">
-							<label for="Terrible">Terrible</label>
-						</div>
-	<h4 class="col-12 col-12-small">Stress Level: </h4>
+						<h4 class="col-12 col-12-small">Stress Level: </h4>
 						<div class="col-2 col-12-small">
 							<input type="radio" id="stress5" name="stress" value='2, Very High' checked required>
 							<label for="stress5">Very High</label>
@@ -205,94 +191,105 @@
 								<li><input type="reset" value="Reset" /></li>
 							</ul>
 						</div>
-			</div>
-			</form>
-
-			<form action="/updateNotes" method="POST">
-				<div class="col-12">
-				<h4 class="col-12 col-12-small">Journal Entries</h4>
-
-					
-					<div class="col-12 col-12-xsmall">
-						<input type="date" name="date" placeholder="Date" required />
 					</div>
-					<textarea name="moodNotes" id="moodNotes" placeholder="Enter your message" rows="6"></textarea>
-				</div>
-				<div class="col-12">
-					<ul class="actions">
-						<li><input type="submit" class="primary" /></li>
-						<li><input type="reset" value="Reset" /></li>
-					</ul>
-				</div>
-			</form>
+					</form>
 
-			<form action="updateTookMed" method="POST">
-				<h4 class="col-12 col-12-small">Took Medications</h4>
-			
-				<div class="col-12 col-12-xsmall">
-					<input type="date" name="date" placeholder="Date" required />
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="radio" id="Yes" name="medsTaken" value="Yes" required>
-					<label for="Yes">Yes</label>
-				</div>
-				<div class="col-2 col-12-small">
-
-					<input type="radio" id="No" name="medsTaken" value="No">
-					<label for="No">No</label>
-				</div>
-				<div class="col-12">
-					<ul class="actions">
-						<li><input type="submit" class="primary" /></li>
-						<li><input type="reset" value="Reset" /></li>
-					</ul>
-				</div>
-
-			</form>
+					<form action="/updateNotes" method="POST">
+						<div class="row gtr-uniform p-2">
+							
+								<h4 class="col-8 col-8-small">Journal Entries</h4>
 
 
-			<form action="/updateActivities" method="POST">
-				<div class="col-12 col-12-xsmall">
-					<input type="date" name="date" placeholder="Date" required />
-				</div>
-				<h4 class="col-12 col-12-small">What did you do today?</h4>
+								<div class="col-4 col-4-xsmall align-middle">
+									<input type="date" name="date" placeholder="Date" required />
+								</div>
+								
+								<div class="col-12 col-12-small">
+									<textarea name="moodNotes" id="moodNotes" placeholder="Enter your message" rows="6"></textarea>
+								</div>
+								
+								<ul class="actions">
+									<li><input type="submit" class="primary" /></li>
+									<li><input type="reset" value="Reset" /></li>
+								</ul>
+							
+					</div>
+					</form>
 
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="physicalActivity" value="Physical Activities" name="activities">
-					<label for="physicalActivity">Physical Activity</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="socialized" value="Socialized with Friends" name="activities">
-					<label for="socialized">Socialized with Friends</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="relaxed" value="Relaxed" name="activities">
-					<label for="relaxed">Relaxed</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="work" value="Worked" name="activities">
-					<label for="work">Worked</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="meal" value="Had a Meal" name="activities">
-					<label for="meal">Had a Meal</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="hobby" value="Enjoyed a Hobby" name="activities">
-					<label for="hobby">Enjoyed a hobby</label>
-				</div>
-				<div class="col-2 col-12-small">
-					<input type="checkbox" id="cleaned" value="Cleaned up" name="activities">
-					<label for="cleaned">Cleaned up</label>
-				</div>
+					<form action="updateTookMed" method="POST">
+						<div class="row gtr-uniform p-2">
+						<h4 class="col-8 col-8-small">Took Medications</h4>
 
-				<div class="col-12">
-					<ul class="actions">
-						<li><input type="submit" class="primary" /></li>
-						<li><input type="reset" value="Reset" /></li>
-					</ul>
-				</div>
-			</form>
+						<div class="col-4 col-4-xsmall align-middle">
+							<input type="date" name="date" placeholder="Date" required />
+						</div>
+
+						<div class="col-2 col-12-small">
+							<input type="radio" id="Yes" name="medsTaken" value="Yes" required>
+							<label for="Yes">Yes</label>
+						</div>
+						<div class="col-2 col-12-small">
+
+							<input type="radio" id="No" name="medsTaken" value="No">
+							<label for="No">No</label>
+						</div>
+						<div class="col-12">
+							<ul class="actions">
+								<li><input type="submit" class="primary" /></li>
+								<li><input type="reset" value="Reset" /></li>
+							</ul>
+						</div>
+					</div>
+					</form>
+
+
+					<form action="/updateActivities" method="POST">
+
+						<div class="row gtr-uniform p-2">
+
+						<h4 class="col-8 col-8-small">What did you do today?</h4>
+
+						<div class="col-4 col-4-xsmall align-middle">
+							<input type="date" name="date" placeholder="Date" required />
+						</div>
+
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="physicalActivity" value="Physical Activities" name="activities">
+							<label for="physicalActivity">Physical Activity</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="socialized" value="Socialized with Friends" name="activities">
+							<label for="socialized">Socialized with Friends</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="relaxed" value="Relaxed" name="activities">
+							<label for="relaxed">Relaxed</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="work" value="Worked" name="activities">
+							<label for="work">Worked</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="meal" value="Had a Meal" name="activities">
+							<label for="meal">Had a Meal</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="hobby" value="Enjoyed a Hobby" name="activities">
+							<label for="hobby">Enjoyed a hobby</label>
+						</div>
+						<div class="col-2 col-12-small">
+							<input type="checkbox" id="cleaned" value="Cleaned up" name="activities">
+							<label for="cleaned">Cleaned up</label>
+						</div>
+
+						<div class="col-12">
+							<ul class="actions">
+								<li><input type="submit" class="primary" /></li>
+								<li><input type="reset" value="Reset" /></li>
+							</ul>
+						</div>
+					</div>
+					</form>
 			</section>
 		</div>
 	</div>
@@ -308,9 +305,18 @@
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script src="moodLog.js"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-			<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-			<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="bootScript.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 </body>
 
