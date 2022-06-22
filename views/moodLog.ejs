@@ -93,85 +93,109 @@
 						</div>
 
 						<div class="col-12 col-12-xsmall">
-							<input type="time" name="time" placeholder="Time" required />
+							<input type="time" name="time" id="time" placeholder="Time" required />
 						</div>
 
-						<div class="col-2 col-12-small">
-							<input type="radio" id="Amazing" name="mood" value="4" checked required>
+						<!-- <div class="col-2 col-12-small">
+							<input type="radio" id="Amazing" name="mood" value="4, Amazing" checked required>
 							<label for="Amazing">Amazing</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="Good" name="mood" value="3">
+							<input type="radio" id="Good" name="mood" value="3, Good">
 							<label for="Good">Good</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="Okay" name="mood" value="2">
+							<input type="radio" id="Okay" name="mood" value="2, Okay">
 							<label for="Okay">Okay</label>
 						</div>
 
 						<div class="col-2 col-12-small">
-							<input type="radio" id="poor" name="mood" value="1">
+							<input type="radio" id="poor" name="mood" value="1, Poor">
 							<label for="poor">Poor</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="Terrible" name="mood" value="0">
+							<input type="radio" id="Terrible" name="mood" value="0, Terrible">
+							<label for="Terrible">Terrible</label>
+						</div> -->
+						<div class="col-2 col-12-small">
+							<input type="radio" id="Amazing" name="mood" value="4, Amazing" checked required>
+							<label for="Amazing">Amazing</label>
+						</div>
+						<div class="col-2 col-12-small">
+	
+							<input type="radio" id="Good" name="mood" value="3, Good">
+							<label for="Good">Good</label>
+						</div>
+						<div class="col-2 col-12-small">
+	
+							<input type="radio" id="Okay" name="mood" value="2, Okay">
+							<label for="Okay">Okay</label>
+						</div>
+	
+						<div class="col-2 col-12-small">
+							<input type="radio" id="poor" name="mood" value="1, Poor">
+							<label for="poor">Poor</label>
+						</div>
+						
+						
+						<div class="col-2 col-12-small">
+	
+							<input type="radio" id="Terrible" name="mood" value="0, Terrible">
 							<label for="Terrible">Terrible</label>
 						</div>
-
-						<h4 class="col-12 col-12-small">Stress Level: </h4>
-
+	<h4 class="col-12 col-12-small">Stress Level: </h4>
 						<div class="col-2 col-12-small">
-							<input type="radio" id="stress5" name="stress" value='2' checked required>
+							<input type="radio" id="stress5" name="stress" value='2, Very High' checked required>
 							<label for="stress5">Very High</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="stress4" name="stress" value="1">
+							<input type="radio" id="stress4" name="stress" value="1, High">
 							<label for="stress4">High</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="stress3" name="stress" value="0">
+							<input type="radio" id="stress3" name="stress" value="0, Mid">
 							<label for="stress3">Mid</label>
 						</div>
 
 						<div class="col-2 col-12-small">
-							<input type="radio" id="stress2" name="stress" value="-1">
+							<input type="radio" id="stress2" name="stress" value="-1, Low">
 							<label for="stress2">Low</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="stress1" name="stress" value="-2">
+							<input type="radio" id="stress1" name="stress" value="-2, Very Low">
 							<label for="stress1">Very Low</label>
 						</div>
 
 						<h4 class="col-12 col-12-small">Energy Level: </h4>
 
 						<div class="col-2 col-12-small">
-							<input type="radio" id="Very High" name="energy" value="2" checked>
+							<input type="radio" id="Very High" name="energy" value="2, Very High" checked>
 							<label for="5" required>Very High</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="4" name="energy" value="1">
+							<input type="radio" id="4" name="energy" value="1, High">
 							<label for="4">High</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="3" name="energy" value="0">
+							<input type="radio" id="3" name="energy" value="0, Mid">
 							<label for="3">Mid</label>
 						</div>
 
 						<div class="col-2 col-12-small">
-							<input type="radio" id="2" name="energy" value="-1">
+							<input type="radio" id="2" name="energy" value="-1, Low">
 							<label for="2">Low</label>
 						</div>
 						<div class="col-2 col-12-small">
 
-							<input type="radio" id="1" name="energy" value="-2">
+							<input type="radio" id="1" name="energy" value="-2, Very Low">
 							<label for="1">Very Low</label>
 						</div>
 
@@ -186,6 +210,9 @@
 
 			<form action="/updateNotes" method="POST">
 				<div class="col-12">
+				<h4 class="col-12 col-12-small">Journal Entries</h4>
+
+					
 					<div class="col-12 col-12-xsmall">
 						<input type="date" name="date" placeholder="Date" required />
 					</div>

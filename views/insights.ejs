@@ -96,7 +96,7 @@
 								<ul>
 								<li>You've taken your medications <%= medStreak %> out of 7 days this week.</li>
 								<li>Average mood this week: <%= averageMood %></li>
-								<li>Todays meds are <%= todaysMeds%> </li>
+								<li>Todays meds are: <%= todaysMeds%> </li>
                             	</ul>					
 							</section>
 						</div>
@@ -498,15 +498,12 @@ energyConfig
 	<div class="col-12">
 	<h4>What you did this week:</h4>
 	</div>
+
 	<% for(let i=0; i<moodLog.length; i++) {%>
 		<div class="col-4" >
 			
 			<section class="renderSections"  >
-				<!-- <h3 class="pgHead">
-					
-				</h3> -->
-				
-
+			
 				<p>Date: <%= moodLog[i].date %></p>
 				<p>Mood: Mood <%= moodLog[i].mood[0] %></p>
 				<p>Activities: </p>

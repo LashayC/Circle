@@ -247,7 +247,7 @@ app.delete('/deleteMed', (req, res) => {
 //Mood Log ======================================================
 
 app.get('/moodLog', isLoggedIn, function(req, res) {
-  db.collection(moodCollection, medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
+  db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     //let myPlants = result.filter(doc => doc.name === req.user.local.email)
@@ -300,10 +300,11 @@ app.post('/addMood', (req, res) => {
   // console.log('stressObject', stressObj)
   db.collection(moodCollection).insertOne({date: req.body.date,
       createdBy: req.user._id,
-      sleep: req.body.sleep,
-      mood: [],  
-      stress: [],
-      energy: [],
+      sleep: req.body.sleep
+      // stress: [],
+      // energy: [],
+      // stress: req.body.stress,
+      // energy: req.body.energy
       }, (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
@@ -314,12 +315,15 @@ app.post('/addMood', (req, res) => {
 
 
 app.post('/updateMood', (req, res) => {
+  let moodSplit = req.body.mood.split(', ')
+  let stressSplit = req.body.stress.split(', ')
+  let energySplit = req.body.energy.split(', ')
   db.collection(moodCollection).updateOne({date: req.body.date},
   {
-    $push: {
-     stress: req.body.stress,
-
-     energy: req.body.energy
+    $set: {
+     stress: stressSplit,
+    mood: moodSplit,  
+     energy: energySplit
     }
   },
    (err, result) => {
@@ -331,10 +335,12 @@ app.post('/updateMood', (req, res) => {
 })
 
 app.post('/updateNotes', (req, res) => {
+  let moodSet = req.body.mood.split(', ')
+  console.log('Post; update notes allit: ',req.body)
   db.collection(moodCollection).updateOne({date: req.body.date},
   {
     $set: {
-      mood: req.body.mood,
+      
       moodNotes: req.body.moodNotes
     }
   },
@@ -544,19 +550,33 @@ app.get('/insights', isLoggedIn, function(req, res) {
     // for(let i = 0; i < datesMood.length; i++){
     //   if(dayjs(datesMood[datesMood.length -1], 'YYYY-MM-DD').format('D'))
     // }
-
+    
      let datesMood = result.map(el => el.date)
 
      console.log('These are unsorted dates', datesMood)
 
-     datesMood.sort((a, b) => {return Date.parse(a) - Date.parse(b) });
+     datesMood.sort((a, b) => {return Date.parse(b) - Date.parse(a) });
 
-     console.log('These are sorted dates', datesMood)
+    
+    console.log('These are sorted dates', datesMood)
     console.log('This is the date for today', dayjs())
 
     let checkinStreak = 0
 
-    for(let i = 0; i < result)
+    // for(let i = 0; i < datesMood.length ; i++){
+
+    //   if(!dayjs().isToday(dayjs(datesMood[i], 'YYYY-MM-DD'))){
+    //     return datesMood = 0
+    //   }else if(dayjs().yesterday){
+    //     checkinStreak +=1
+    //     daysjs()
+    //   }
+    // }
+    
+    console.log()
+
+
+    // for(let i)
          
     res.render('insights.ejs', {
       user : req.user, 
