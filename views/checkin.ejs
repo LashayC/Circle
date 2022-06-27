@@ -65,11 +65,11 @@
 		<!-- Main -->
 		<div id="main">
 			<div class="inner">
-				<h1>Update Entries</h1>
+				<h1>Mood Log</h1>
 				<!-- <span class="image main"><img src="img/pic13.jpg" alt="" /></span> -->
 				<section>
-					<h2>Select a date and submit new entry to update.</h2>
-					<form method="post" action="/updateSleep">
+					<h2>Check-In</h2>
+					<form method="post" action="/checkin">
 						<div class="row gtr-uniform p-2">
 						<div class="row gtr-uniform">
 
@@ -84,28 +84,20 @@
 								<input type="number" name="sleep" placeholder="Hours of sleep" required />
 							</div>
 
-							<div class="col-12">
-								<ul class="actions">
-									<li><input type="submit" class="primary" /></li>
-									<li><input type="reset" value="Reset" /></li>
-								</ul>
-							</div>
-						</div>
-						</div>
-					</form>
-
-
-					<form action="/updateMood" method="POST">
-						<div class="row gtr-uniform p-2">
-						<h4 class="col-8 col-8-small">How are you feeling: </h4>
-
-						<div class="col-2 col-2-xsmall align-middle">
-							<input type="date" name="date" placeholder="Date" required />
+							
 						</div>
 						
+				
+
+
+					
+					
+						<h4 class="col-12 col-12-small">How are you feeling: </h4>
+
+<!-- 						
 						<div class="col-2 col-2-xsmall">
 							<input type="time" name="time" id="time" placeholder="Time" required />
-						</div>
+						</div> -->
 
 						<div class="col-2 col-12-small">
 							<input type="radio" id="Amazing" name="mood" value="4, Amazing" checked required>
@@ -133,6 +125,7 @@
 							<input type="radio" id="Terrible" name="mood" value="0, Terrible">
 							<label for="Terrible">Terrible</label>
 						</div>
+                        
 						<h4 class="col-12 col-12-small">Stress Level: </h4>
 						<div class="col-2 col-12-small">
 							<input type="radio" id="stress5" name="stress" value='2, Very High' checked required>
@@ -186,44 +179,22 @@
 							<label for="1">Very Low</label>
 						</div>
 
-						<div class="col-12">
-							<ul class="actions">
-								<li><input type="submit" class="primary" /></li>
-								<li><input type="reset" value="Reset" /></li>
-							</ul>
-						</div>
-					</div>
-					</form>
-
-					<form action="/updateNotes" method="POST">
-						<div class="row gtr-uniform p-2">
+					
+				
 							
-								<h4 class="col-8 col-8-small">Journal Entries</h4>
+								<h4 class="col-12 col-12-small">Journal Entries</h4>
 
-
-								<div class="col-4 col-4-xsmall align-middle">
-									<input type="date" name="date" placeholder="Date" required />
-								</div>
 								
 								<div class="col-12 col-12-small">
 									<textarea name="moodNotes" id="moodNotes" placeholder="Enter your message" rows="6"></textarea>
 								</div>
 								
-								<ul class="actions">
-									<li><input type="submit" class="primary" /></li>
-									<li><input type="reset" value="Reset" /></li>
-								</ul>
 							
-					</div>
-					</form>
+							
+				
 
-					<form action="updateTookMed" method="POST">
-						<div class="row gtr-uniform p-2">
-						<h4 class="col-8 col-8-small">Took Medications</h4>
+						<h4 class="col-12 col-12-small">Took Medications</h4>
 
-						<div class="col-4 col-4-xsmall align-middle">
-							<input type="date" name="date" placeholder="Date" required />
-						</div>
 
 						<div class="col-2 col-12-small">
 							<input type="radio" id="Yes" name="medsTaken" value="Yes" required>
@@ -234,25 +205,14 @@
 							<input type="radio" id="No" name="medsTaken" value="No">
 							<label for="No">No</label>
 						</div>
-						<div class="col-12">
-							<ul class="actions">
-								<li><input type="submit" class="primary" /></li>
-								<li><input type="reset" value="Reset" /></li>
-							</ul>
-						</div>
-					</div>
-					</form>
+						
 
 
-					<form action="/updateActivities" method="POST">
+					
 
-						<div class="row gtr-uniform p-2">
+						<h4 class="col-12 col-12-small">What did you do today?</h4>
 
-						<h4 class="col-8 col-8-small">What did you do today?</h4>
-
-						<div class="col-4 col-4-xsmall align-middle">
-							<input type="date" name="date" placeholder="Date" required />
-						</div>
+						
 
 						<div class="col-2 col-12-small">
 							<input type="checkbox" id="physicalActivity" value="Physical Activities" name="activities">
@@ -289,7 +249,7 @@
 								<li><input type="reset" value="Reset" /></li>
 							</ul>
 						</div>
-					</div>
+					
 					</form>
 			</section>
 		</div>

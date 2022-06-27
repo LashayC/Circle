@@ -62,6 +62,7 @@
 							<li><a href="/appointments">Appointments</a></li>
 							<li><a href="/insights">Insights</a></li>
 							<li><a href="/logout">Logout</a></li>
+							<li><a href="/checkin">Check-in</a></li>
 						</ul>
 					</nav>
 
@@ -110,6 +111,34 @@
 									</div>
 								</form>
 							</section>
+							<div class="row gtr-uniform">
+								<div class="col-12">
+								<h4>Appointments:</h4>
+								</div>
+							
+								<% for(let i=0; i<appointments.length; i++) {%>
+									<div class="col-4" >
+										
+										<section class="renderSections"  >
+										
+											<p>Date: <%= appointments[i].date %></p>
+											<p>Time: <%= appointments[i].time %></p>
+											<p>Location: <%= appointments[i].location %></p>
+											<p>Type: <%= appointments[i].appointmentType %></p>
+											<p>Provider Name: <%= appointments[i].providerName %></p>
+											<p>Reason for Visit: <%= appointments[i].reasonNotes %></p>
+											
+							
+										
+											
+											
+										</section>
+									
+										
+										</div>
+									<% } %>
+							
+									</div>
 						</div>
 					</div>
 <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&details=Exhibition%20of%20work&location=Remote&text=Demo%20Day" title="Save Event in my Calendar">Add to Calendar</a>

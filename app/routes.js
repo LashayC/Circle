@@ -45,21 +45,6 @@ const apptCollection = 'appointments'
         })
     });
 
-  //   app.get('/profile', isLoggedIn, function(req, res) {
-  //     db.collection('plants').find().toArray((err, result) => {
-  //       if (err) return console.log(err)
-  //       console.log(result)
-
-  //       let bigPlants = result.filter(doc => doc.plantInfo.name === req.user.local.email)
-
-  //       res.render('profile.ejs', {
-  //         user : req.user, 
-  //         plants: result,
-  //         bigPlants: myPlants
-  //       })
-  //     })
-  // });
-
     // HOME SECTION =================================
     
     app.get('/home', isLoggedIn, function(req, res) {
@@ -82,57 +67,19 @@ const apptCollection = 'appointments'
 
 // Home Page Routes ===============================================================
 
-   
-
-    // app.post('/careUpdate', (req, res) => {
-    //   db.collection(medCollection).updateOne({ _id: ObjectId(req.body.plantID)},
-    //   {
-    //     $push: {
-    //       plantCare:{
-    //       water: req.body.water, 
-    //       comments: req.body.comments,
-    //       careDate: req.body.careDate,
-    //       status: req.body.status, 
-    //       waterReminderDate: req.body.waterReminderDate
-    //       }
-    //     }
-    //   },
-    //    (err, result) => {
-    //     if (err) return console.log(err)
-    //     //console.log(result)
-    //     console.log('saved to database')
-    //     res.redirect('/home')
-    //   })
-    // })
-
-
-    // app.delete('/deletePlant', (req, res) => {
-    //   db.collection('plants').findOneAndDelete({ _id: ObjectId(req.body.theID)}, (err, result) => {
-    //     if (err) return res.send(500, err)
-    //     res.send('Message deleted!')
-    //   })
-    // })
-
  
 // Medication Section ==============================================
 
 app.get('/medication', isLoggedIn, function(req, res) {
   db.collection(medCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
     if (err) return console.log(err)
-    //console.log(result)
-    // let medCollection = result.filter(doc => doc.name === req.user.local.email)
-    //medication recurrence functions Daily/ Weekly/ Monthly
+   
+  let note = ''
     let todaysMeds = []
     
 
       for(let i = 0; i < result.length; i++){
-        // result[i].startDate
-        // result[i].endDate
-        //console.log('all enddates',result[i].endDate)
-        // let dailyList = []
-        // let weeklyList = []
-        // let monthlyList = []
-
+     
         console.log(dayjs(result[i].startDate, 'YYYY-MM-DD').format('dddd') === dayjs().format('dddd'))
 
         if( result[i].recurrence == 'daily' && result[i].endDate == '' && todaysDate >= result[i].startDate){
@@ -170,7 +117,7 @@ app.get('/medication', isLoggedIn, function(req, res) {
       console.log('is dayjs equal to written date', dayjs().format('YYYY-MM-DD') == '2022-06-19')
       console.log('is dayjs greater than yesterdays written date', dayjs().format('YYYY-MM-DD') > '2022-06-18')
       console.log('is dayjs less than tomorrows written date', dayjs().format('YYYY-MM-DD') < '2022-06-20')
-      console.log('add days to day.js check: returns 19 + 4 returns 23', dayjs().add(4, 'day').format('YYYY-MM-DD'))
+      console.log('add days to day.js check:  19 + 4 returns 23', dayjs().add(4, 'day').format('YYYY-MM-DD'))
       console.log('check if dayjs can take given date and pull day of week from it', dayjs('2022-06-15', 'YYYY-MM-DD').format('dddd'))
       console.log('check if dayjs can take todays date and pull day of week from it', dayjs().format('dddd'))
 
@@ -244,6 +191,55 @@ app.delete('/deleteMed', (req, res) => {
   })
 })
 
+//Check-In ====================================================================
+
+app.get('/checkin', isLoggedIn, function(req, res) {
+  db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
+    if (err) return console.log(err)
+
+    console.log('This is the result for Mood Collection AND Med Collection', result)
+
+    console.log('user from db on moodLog', req.user)
+    res.render('checkin.ejs', {
+      user : req, 
+      checkin: result
+    
+    })
+  })
+});
+
+app.post('/checkin', (req, res) => {
+  let moodSplit = req.body.mood.split(', ')
+  let stressSplit = req.body.stress.split(', ')
+  let energySplit = req.body.energy.split(', ')
+
+db.collection(moodCollection).insertOne({date: req.body.date,
+  createdBy: req.user._id,
+  sleep: req.body.sleep,
+    // time: req.body.time, 
+    mood: moodSplit,  
+    medsTaken: req.body.medsTaken, 
+    activities: req.body.activities, 
+    moodNotes: req.body.moodNotes,
+    stress: stressSplit,
+    energy: energySplit,
+    sleep: req.body.sleep,
+    createdBy: req.user._id
+  }, (err, result) => {
+if (err) return console.log(err)
+//console.log(result)
+console.log('saved to database')
+res.redirect('/moodLog')
+})
+})
+
+
+
+
+
+
+
+
 //Mood Log ======================================================
 
 app.get('/moodLog', isLoggedIn, function(req, res) {
@@ -290,22 +286,34 @@ app.get('/moodLog', isLoggedIn, function(req, res) {
 //   })
 // })
 
-app.post('/addMood', (req, res) => {
-  // let stressObj = JSON.stringify(req.body.stress)
-  // let stressArray = req.body.stress.split(', ')
-  // let energyArray = req.body.energy.split(', ')
-  // let moodArray = req.body.mood.split(', ')
-// mood{'Happy': 5, 'Sad':1}
+// app.post('/addMood', (req, res) => {
 
-  // console.log('stressObject', stressObj)
-  db.collection(moodCollection).insertOne({date: req.body.date,
-      createdBy: req.user._id,
+
+//   // console.log('stressObject', stressObj)
+//   db.collection(moodCollection).insertOne({date: req.body.date,
+//       createdBy: req.user._id,
+//       sleep: req.body.sleep
+//       // stress: [],
+//       // energy: [],
+//       // stress: req.body.stress,
+//       // energy: req.body.energy
+//       }, (err, result) => {
+//     if (err) return console.log(err)
+//     //console.log(result)
+//     console.log('saved to database')
+//     res.redirect('/moodLog')
+//   })
+// })
+
+
+app.post('/updateSleep', (req, res) => {
+  db.collection(moodCollection).updateOne({$and: [{date: req.body.date}, {createdBy: ObjectId(req.user._id)}]},
+  {
+    $set: {
       sleep: req.body.sleep
-      // stress: [],
-      // energy: [],
-      // stress: req.body.stress,
-      // energy: req.body.energy
-      }, (err, result) => {
+   }
+  },
+   (err, result) => {
     if (err) return console.log(err)
     //console.log(result)
     console.log('saved to database')
@@ -313,12 +321,11 @@ app.post('/addMood', (req, res) => {
   })
 })
 
-
 app.post('/updateMood', (req, res) => {
   let moodSplit = req.body.mood.split(', ')
   let stressSplit = req.body.stress.split(', ')
   let energySplit = req.body.energy.split(', ')
-  db.collection(moodCollection).updateOne({date: req.body.date},
+  db.collection(moodCollection).updateOne({$and: [{date: req.body.date}, {createdBy: ObjectId(req.user._id)}]},
   {
     $set: {
      stress: stressSplit,
@@ -337,7 +344,7 @@ app.post('/updateMood', (req, res) => {
 app.post('/updateNotes', (req, res) => {
   // let moodSet = req.body.mood.split(', ')
   console.log('Post; update notes allit: ',req.body)
-  db.collection(moodCollection).updateOne({date: req.body.date},
+  db.collection(moodCollection).updateOne({$and: [{date: req.body.date}, {createdBy: ObjectId(req.user._id)}]},
   {
     $set: {
       
@@ -353,7 +360,7 @@ app.post('/updateNotes', (req, res) => {
 })
 
 app.post('/updateTookMed', (req, res) => {
-  db.collection(moodCollection).updateOne({date: req.body.date},
+  db.collection(moodCollection).updateOne({$and: [{date: req.body.date}, {createdBy: ObjectId(req.user._id)}]},
   {
     $set: {
       medsTaken: req.body.medsTaken
@@ -368,7 +375,7 @@ app.post('/updateTookMed', (req, res) => {
 })
 
 app.post('/updateActivities', (req, res) => {
-  db.collection(moodCollection).updateOne({date: req.body.date},
+  db.collection(moodCollection).updateOne({$and: [{date: req.body.date}, {createdBy: ObjectId(req.user._id)}]},
   {
     $push: {
      activities: req.body.activities
@@ -426,6 +433,11 @@ app.post('/addAppointments', (req, res) => {
 //if you want to use same route for dif roles.
 
 //grab insights assoc w/ account
+
+
+
+
+
 app.get('/insights', isLoggedIn, function(req, res) {
   //console.log(req.user.local.role)
   db.collection(moodCollection).find({createdBy: ObjectId(req.user._id)}).toArray((err, result) => {
@@ -435,6 +447,8 @@ app.get('/insights', isLoggedIn, function(req, res) {
     //console.log('mood for insights', result.length)
     
     // Sleep Chart---------------------------------
+      let note = ''
+
     let sleepHours = []
     let sleepDates = []
     let monthLabel = dayjs().format('MMMM')
@@ -456,7 +470,7 @@ app.get('/insights', isLoggedIn, function(req, res) {
     let moodData =[]
 
     for(let i = 0; i < result.length; i++){
-      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
         moodData.push(result[i].mood[0])
         moodDaysOfWeek.push(dayjs(result[i].date, 'YYYY-MM-DD').format('ddd'))
       }
