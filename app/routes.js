@@ -467,17 +467,42 @@ app.get('/insights', isLoggedIn, function(req, res) {
     // let sleepNumbers = []
     // dayjs('2018-06-27').week() // 26 //can get weeks of year.
     let moodDaysOfWeek = []
-    let moodData =[]
+    let moodData =[null, null, null, null, null, null, null]
 
     for(let i = 0; i < result.length; i++){
       if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
-        moodData.push(result[i].mood[0])
+     
+        moodData.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 1, result[i].mood[0])
+        // moodData.push(result[dayjs().day()].mood[0])
         moodDaysOfWeek.push(dayjs(result[i].date, 'YYYY-MM-DD').format('ddd'))
       }
     }
     console.log('this is the current week of the month', dayjs().week())
     console.log('this is the  week of the given month 2022-06-02', dayjs('2022-05-31', 'YYYY-MM-DD').week())
     console.log('this is moodDays of week and mood Data', moodDaysOfWeek, moodData)
+
+    // stress chart -------------------------------------------------------------------
+
+    let stressData =[null, null, null, null, null, null, null]
+
+    for(let i = 0; i < result.length; i++){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+     
+        stressData.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 1, result[i].stress[0])
+      }
+    }
+
+    // energy chart --------------------------------------------------------------------------
+
+    let energyData =[null, null, null, null, null, null, null]
+
+    for(let i = 0; i < result.length; i++){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+     
+        stressData.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 1, result[i].energy[0])
+      }
+    }
+
 
     // Med Streak ----------------------------------------------------------
     let medStreak = 0
@@ -602,7 +627,9 @@ app.get('/insights', isLoggedIn, function(req, res) {
       moodData,
       medStreak,
       averageMood,
-      todaysMeds: todaysMeds
+      todaysMeds: todaysMeds,
+      stressData,
+      energyData
 
     
     })

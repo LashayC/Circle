@@ -299,7 +299,7 @@
 				datasets: [
 					{
 						label: 'Stress',
-						data: [1, 2, -1, 1, 0, -2, -1],
+						data: [<%= stressData %>],
 						borderColor: 'rgba(75, 192, 192, 1)',
       backgroundColor: 'rgba(75, 192, 192, 0.5)',
       borderWidth: 2,
@@ -330,7 +330,7 @@ scales: {
 				ticks: {
 					callback: function(value, index){
 						// console.log(index)
-						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
+						//let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
 						// console.log(value)
 						switch(value){
 							case 2:
@@ -395,7 +395,7 @@ stressConfig
 				datasets: [
 					{
 						label: 'Energy',
-						data: [-2, -1, 2, 0, -1, 2, -1],
+						data: [<%= energyData %>],
 						borderColor: 'rgba(255, 159, 64, 1)',
       backgroundColor: 'rgba(255, 159, 64, 0.5)',
       borderWidth: 2,
