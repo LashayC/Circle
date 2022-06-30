@@ -332,6 +332,8 @@ scales: {
 						// console.log(index)
 						//let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
 						// console.log(value)
+						console.log('this is value:', value, 'This is index', index)
+
 						switch(value){
 							case 2:
 								return 'Very High'
@@ -426,7 +428,6 @@ scales: {
 				ticks: {
 					callback: function(value, index){
 						// console.log(index)
-						let mood = ['Amazing', 'Good', 'Okay', 'Poor', 'Terrible']
 						// console.log(value)
 						switch(value){
 							case 2:
@@ -474,29 +475,32 @@ energyConfig
 </div>
 <!-- <div class="col-12"><span class="image fit"><img src="img/pic13.jpg" alt="" /></span></div> -->
 <!-- <div class="col-4"><span class="image fit"><img src="img/pic01.jpg" alt="" /></span></div> -->
-<div class="row gtr-uniform">
+<div class="row gtr-uniform p-5">
 	<div class="col-12">
 	<h4>What you did this week:</h4>
 	</div>
 
-	<% for(let i=0; i<moodLog.length; i++) {%>
+	
+
+	<% for(let i=0; i<weeklyLog.length; i++) {%>
+		
 		<div class="col-4" >
 			
 			<section class="renderSections"  >
 			
-				<p>Date: <%= moodLog[i].date %></p>
-				<p>Mood: Mood <%= moodLog[i].mood[0] %></p>
+				<p>Date: <%= weeklyLog[i].date %></p>
+				<p>Mood: Mood <%= weeklyLog[i].mood[0] %></p>
 				<p>Activities: </p>
 					<ul>
 
-						<% for(let i=0; i<moodLog[i].activities[0].length; i++) {%>
-							<li><%= moodLog[i].activities[0][i] %></li>
+						<% for(let i=0; i<weeklyLog[i].activities[0].length; i++) {%>
+							<li><%= weeklyLog[i].activities[0][i] %></li>
 
 							<% } %>
 		
 				</ul>
 				<p>Log: </p>
-				<p><%= moodLog[i].moodNotes %></p>
+				<p><%= weeklyLog[i].moodNotes %></p>
 
 			
 				

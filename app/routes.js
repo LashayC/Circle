@@ -464,8 +464,7 @@ app.get('/insights', isLoggedIn, function(req, res) {
 
 
     // mood chart ----------------------------------------------------------
-    // let sleepNumbers = []
-    // dayjs('2018-06-27').week() // 26 //can get weeks of year.
+
     let moodDaysOfWeek = []
     let moodData =[null, null, null, null, null, null, null]
 
@@ -499,16 +498,28 @@ app.get('/insights', isLoggedIn, function(req, res) {
     for(let i = 0; i < result.length; i++){
       if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
      
-        stressData.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 1, result[i].energy[0])
+        energyData.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 1, result[i].energy[0])
       }
     }
 
+    // entry logs ---------------------------------------------------------------------------
+    let weeklyLog = []
+
+   for(let i = 0; i < result.length; i++){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+     
+        weeklyLog.splice(dayjs(result[i].date, 'YYYY-MM-DD').day(), 0, result[i])
+      }
+    }
+
+    // datesMood.sort((a, b) => {return Date.parse(b) - Date.parse(a) })
+    console.log('this is the weekly log', weeklyLog)
 
     // Med Streak ----------------------------------------------------------
     let medStreak = 0
 
     for(let i = 0; i < result.length; i++){
-      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() && result[i].medsTaken == 'Yes'){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() && result[i].medsTaken == 'Yes'){
         medStreak += 1
       } 
     }
@@ -521,7 +532,7 @@ app.get('/insights', isLoggedIn, function(req, res) {
     let moodCount = 0
     let divMood = 0
     for(let i = 0; i < result.length; i++){
-      if(23 === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
+      if(dayjs().week() === dayjs(result[i].date, 'YYYY-MM-DD').week() ){
         divMood += Number(result[i].mood[0])
         moodCount ++
       }
@@ -629,7 +640,8 @@ app.get('/insights', isLoggedIn, function(req, res) {
       averageMood,
       todaysMeds: todaysMeds,
       stressData,
-      energyData
+      energyData, 
+      weeklyLog
 
     
     })
